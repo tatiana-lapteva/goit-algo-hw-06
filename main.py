@@ -20,6 +20,7 @@ import networkx as nx
 from get_subway_info import get_subway_info
 from dfs_search import dfs_recursive
 from bfs_search import bfs_recursive
+from dijkstra import dijkstra
 from collections import deque
 import matplotlib.pyplot as plt
 
@@ -35,8 +36,8 @@ if __name__ == "__main__":
     G.add_edges_from(weighted_edges)
 
     # Visualization
-    pos = nx.spring_layout(G)
-    #pos = nx.shell_layout(G) 
+    #pos = nx.spring_layout(G)
+    pos = nx.shell_layout(G) 
     edge_labels = nx.get_edge_attributes(G, 'weight')
     node_colors = [color_map[node] for node in G.nodes()]
     nx.draw(G, pos, with_labels=True, node_color=node_colors, node_size=2000, edge_color="gray", font_size=8)
@@ -69,13 +70,26 @@ if __name__ == "__main__":
     bfs_recursive(G, deque(["Героїв Дніпра"]))
 
     # task 3
-    shortest_paths = {}
-    for node in G.nodes():
-        shortest_paths[node] = nx.single_source_dijkstra_path_length(G, node, weight='weight')
 
-    for source, targets in shortest_paths.items():
-        for target, distance in targets.items():
-            print(f"The shortest way from {source} to {target} takes {distance} min")
+    # shortest_paths = {}
+    # for node in G.nodes():
+    #     shortest_paths[node] = nx.single_source_dijkstra_path_length(G, node, weight='weight')
+
+    # for source, targets in shortest_paths.items():
+    #     for target, distance in targets.items():
+    #         print(f"The shortest way from {source} to {target} takes {distance} min")
+
+    print("Algorith Dijkctra:")  
+    dic_graph = {}
+    for (start, end), weight in weights.items():
+        if start not in dic_graph:
+            dic_graph[start] = {}
+        dic_graph[start][end] = weight
+        if end not in dic_graph:
+            dic_graph[end] = {}
+
+    print(dijkstra(dic_graph, "Героїв Дніпра"))
+
 
     # Shortest path between requested stations
     source = "Почайна"
